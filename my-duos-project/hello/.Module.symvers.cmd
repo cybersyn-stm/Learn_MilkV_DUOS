@@ -1,0 +1,1 @@
+cmd_/home/cybersyn/duos/my-duos-project/hello/Module.symvers := sed 's/ko$$/o/' /home/cybersyn/duos/my-duos-project/hello/modules.order | scripts/mod/modpost     -o /home/cybersyn/duos/my-duos-project/hello/Module.symvers -e -i Module.symvers   -T -
