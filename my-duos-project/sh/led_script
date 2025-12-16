@@ -1,0 +1,160 @@
+#!/bin/sh
+
+MODULE_NAME="led_kernel"
+MODULE_FILE="${MODULE_NAME}.ko"
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+PURPLE='\033[0;35m'
+NC='\033[0m' # No Color
+
+#检查是否是root用户
+check_root(){
+    if [ "$(id -u)" -ne 0 ]; then #如果不是root用户 id -u != 0
+        echo -e "${RED}This script must be run as root. Exiting.${NC}"
+        exit 1
+    fi
+}
+
+#检查模块文件是否存在
+check_module_file(){
+    if [ ! -f "$MODULE_FILE" ]; then #-f file 检查 file是否存在且是一个普通文件
+        echo -e "${RED}Module file $MODULE_FILE not found. Exiting.${NC}"
+        echo -e "current directory: $(pwd)"
+        ls -la *.ko 2>/dev/null || echo "No .ko files found in the current directory."
+        exit 1
+    fi
+}
+
+#检查模块是否已加载
+is_module_loaded(){
+    lsmod | grep -q "^${MODULE_NAME}[[:space:]]" && return 0 #把lsmod的输出通过管道传递给grep命令，-q表示静默模式，只返回退出状态码，不输出任何内容。
+    grep -q "^${MODULE_NAME}[[:space:]]" /proc/modules 2>/dev/null && return 0
+    [ -d "/sys/module/${MODULE_NAME}" ] 2>/dev/null && return 0
+    return 1
+}
+
+#卸载模块
+unload_module(){
+    local max_retries=3
+    local retry_count=0
+
+    echo -e "${YELLOW}Unloading Module ${MODULE_NAME} ...${NC}"
+
+    while [ $retry_count -lt $max_retries ]; do
+        #try unload module
+        rmmod "${MODULE_NAME}" 2>/dev/null
+
+        if [ $? -eq 0 ]; then
+            echo -e "${GREEN}Module ${MODULE_NAME} unloaded successfully.${NC}"
+            return 0
+        fi
+
+        retry_count=$((retry_count + 1))
+
+        if [ $retry_count -lt $max_retries ]; then
+            echo -e "${YELLOW}module maybe busy, retrying to unload ...($retry_count/$max_retries)...${NC}"
+            sleep 1
+        fi
+    done
+
+ #最终尝试强制卸载（如果系统支持）
+    echo -e "${YELLOW}尝试强制卸载...${NC}"
+    rmmod -f "$MODULE_NAME" 2>/dev/null
+        #卸载成功返回0,由if语句判断
+       if [ $? -eq 0 ]; then
+        echo -e "${GREEN}成功强制卸载模块 $MODULE_NAME${NC}"
+        return 0
+    else
+        echo -e "${RED}错误: 无法卸载模块 $MODULE_NAME${NC}"
+        echo -e "可能原因:"
+        echo -e "  1. 模块正在被其他进程使用"
+        echo -e "  2. 模块名称不正确"
+        echo -e "  3. 权限不足"
+        echo -e ""
+        echo -e "请检查:"
+        echo -e "  - 运行 'lsmod | grep led' 查看已加载模块"
+        echo -e "  - 运行 'lsof 2>/dev/null | grep led' 查看哪些进程在使用"
+        echo -e "  - 检查 dmesg 输出: dmesg | tail -10"
+        return 1
+    fi
+}
+
+#验证模块是否成功加载
+verify_module_loading(){
+    sleep 1 #等待模块加载完成
+
+    if is_module_loaded; then
+        #echo -e "${GREEN}Module ${MODULE_NAME} loaded successfully.${NC}"
+
+        echo -e "${YELLOW}Module information:${NC}"
+        lsmod | grep "^${MODULE_NAME}[[:space:]]"
+
+        if [ -d "/dev" ]; then
+            echo -e "${YELLOW}Related device files:${NC}"
+            ls -la /dev/*led* 2>/dev/null || echo "No /dev entries found for ${MODULE_NAME}."
+        fi
+        
+        return 0
+    else
+        echo -e "${RED}警告: 模块 $MODULE_NAME 似乎未加载${NC}"
+        echo -e "请检查:"
+        echo -e "  1. dmesg 输出: dmesg | tail -10"
+        echo -e "  2. 模块是否编译正确"
+        return 1
+    fi
+        
+}
+load_module() {
+    echo -e "${YELLOW}Loading Module $MODULE_FILE...${NC}"
+    
+    # 使用绝对路径加载模块
+    insmod "$(pwd)/$MODULE_FILE"
+    
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}Success Loading $MODULE_FILE${NC}"
+        return 0
+    else
+        echo -e "${RED}错误: 无法加载模块 $MODULE_FILE${NC}"
+        echo -e "可能原因:"
+        echo -e "  1. 模块文件损坏"
+        echo -e "  2. 内核版本不匹配"
+        echo -e "  3. 模块依赖未满足"
+        echo -e ""
+        echo -e "请检查 dmesg 输出: dmesg | tail -10"
+        return 1
+    fi
+}
+main(){
+    echo -e "${PURPLE}========================================"
+    echo "LED Kernel Module Management Script"
+    echo "Module: $MODULE_NAME"
+    echo "File: $MODULE_FILE"
+    echo -e "${PURPLE}========================================"
+
+    check_root
+    check_module_file
+
+    if is_module_loaded; then 
+        echo -e "${YELLOW}Module ${MODULE_NAME} is already loaded. Attempting to unload...${NC}"
+        lsmod | grep "^${MODULE_NAME}[[:space:]]"
+
+        if unload_module; then
+            load_module
+            verify_module_loading
+        else
+            exit 1
+        fi
+    else
+        echo -e "${YELLOW}Module ${MODULE_NAME} is not loaded. Proceeding to load...${NC}"
+
+        load_module
+        verify_module_loading
+    fi
+    echo "========================================"
+    echo -e "${GREEN}Opertation completed.${NC}"
+    echo "========================================"
+}
+
+main "$@"

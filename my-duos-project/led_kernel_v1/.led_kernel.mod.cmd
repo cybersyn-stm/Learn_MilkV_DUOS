@@ -1,0 +1,1 @@
+cmd_/home/cybersyn/duos/my-duos-project/led_kernel_v1/led_kernel.mod := { echo  /home/cybersyn/duos/my-duos-project/led_kernel_v1/led_kernel.o;  echo; } > /home/cybersyn/duos/my-duos-project/led_kernel_v1/led_kernel.mod

@@ -1,0 +1,178 @@
+#!/bin/sh
+
+# 颜色定义库 - colors.sh
+# 兼容POSIX shell（sh）版本
+
+# 重置颜色
+NC='\033[0m'
+
+# 常规颜色
+BLACK='\033[0;30m'
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+PURPLE='\033[0;35m'
+CYAN='\033[0;36m'
+WHITE='\033[0;37m'
+
+# 亮色
+BRIGHT_BLACK='\033[1;30m'
+BRIGHT_RED='\033[1;31m'
+BRIGHT_GREEN='\033[1;32m'
+BRIGHT_YELLOW='\033[1;33m'
+BRIGHT_BLUE='\033[1;34m'
+BRIGHT_PURPLE='\033[1;35m'
+BRIGHT_CYAN='\033[1;36m'
+BRIGHT_WHITE='\033[1;37m'
+
+# 背景色
+BG_BLACK='\033[40m'
+BG_RED='\033[41m'
+BG_GREEN='\033[42m'
+BG_YELLOW='\033[43m'
+BG_BLUE='\033[44m'
+BG_PURPLE='\033[45m'
+BG_CYAN='\033[46m'
+BG_WHITE='\033[47m'
+
+# 样式
+BOLD='\033[1m'
+DIM='\033[2m'
+ITALIC='\033[3m'
+UNDERLINE='\033[4m'
+BLINK='\033[5m'
+REVERSE='\033[7m'
+HIDDEN='\033[8m'
+STRIKETHROUGH='\033[9m'
+
+# 实用函数（兼容sh）
+print_error() { echo "${BRIGHT_RED}[ERROR]${NC} $1"; }
+print_warn() { echo "${BRIGHT_YELLOW}[WARNING]${NC} $1"; }
+print_success() { echo "${BRIGHT_GREEN}[SUCCESS]${NC} $1"; }
+print_info() { echo "${BRIGHT_CYAN}[INFO]${NC} $1"; }
+print_debug() { echo "${BRIGHT_BLACK}[DEBUG]${NC} $1"; }
+
+# 带颜色的echo函数（兼容sh）
+color_echo() {
+    local color="$1"
+    local message="$2"
+    # 注意：sh可能需要使用/bin/echo -e，具体取决于系统
+    if command -v echo >/dev/null 2>&1 && [ "$(echo -e test)" = "test" ]; then
+        # 系统echo支持-e选项
+        echo -e "${color}${message}${NC}"
+    else
+        # 使用printf替代，更兼容
+        printf '%b%s%b\n' "${color}" "${message}" "${NC}"
+    fi
+}
+
+# 测试所有颜色
+test_colors() {
+    color_echo "${BOLD}" "=== 颜色测试 ==="
+    
+    # 前景色测试
+    echo "前景色:"
+    color_echo "${BLACK}" "黑色"
+    color_echo "${RED}" "红色"
+    color_echo "${GREEN}" "绿色"
+    color_echo "${YELLOW}" "黄色"
+    color_echo "${BLUE}" "蓝色"
+    color_echo "${PURPLE}" "紫色"
+    color_echo "${CYAN}" "青色"
+    color_echo "${WHITE}" "白色"
+    
+    # 亮色测试
+    echo ""
+    echo "亮色:"
+    color_echo "${BRIGHT_BLACK}" "亮黑"
+    color_echo "${BRIGHT_RED}" "亮红"
+    color_echo "${BRIGHT_GREEN}" "亮绿"
+    color_echo "${BRIGHT_YELLOW}" "亮黄"
+    color_echo "${BRIGHT_BLUE}" "亮蓝"
+    color_echo "${BRIGHT_PURPLE}" "亮紫"
+    color_echo "${BRIGHT_CYAN}" "亮青"
+    color_echo "${BRIGHT_WHITE}" "亮白"
+    
+    # 背景色测试
+    echo ""
+    echo "背景色:"
+    printf '%b%bg%s%b\n' "${WHITE}" "${BG_RED}" " 红色背景 " "${NC}"
+    printf '%b%bg%s%b\n' "${BLACK}" "${BG_GREEN}" " 绿色背景 " "${NC}"
+    printf '%b%bg%s%b\n' "${WHITE}" "${BG_BLUE}" " 蓝色背景 " "${NC}"
+    printf '%b%bg%s%b\n' "${BLACK}" "${BG_YELLOW}" " 黄色背景 " "${NC}"
+    
+    # 样式测试
+    echo ""
+    echo "文本样式:"
+    color_echo "${BOLD}" "粗体"
+    color_echo "${UNDERLINE}" "下划线"
+    color_echo "${BLINK}" "闪烁"
+    color_echo "${REVERSE}" "反显"
+    color_echo "${HIDDEN}" "隐藏"
+    color_echo "${STRIKETHROUGH}" "删除线"
+    
+    # 组合测试
+    echo ""
+    echo "组合效果:"
+    printf '%b粗体红色%b\n' "${BOLD}${RED}" "${NC}"
+    printf '%b下划线蓝色%b\n' "${UNDERLINE}${BLUE}" "${NC}"
+    printf '%b反显绿色%b\n' "${REVERSE}${GREEN}" "${NC}"
+    printf '%b闪烁黄色%b\n' "${BLINK}${YELLOW}" "${NC}"
+}
+
+# 简单彩虹文字效果（兼容sh）
+rainbow_text_simple() {
+    local text="$1"
+    # 使用位置参数模拟数组
+    set -- "${BRIGHT_RED}" "${BRIGHT_YELLOW}" "${BRIGHT_GREEN}" "${BRIGHT_CYAN}" "${BRIGHT_BLUE}" "${BRIGHT_PURPLE}"
+    local i=0
+    local result=""
+    
+    # 逐个字符处理
+    while [ -n "$text" ]; do
+        # 取第一个字符
+        char=$(printf '%s' "$text" | cut -c1)
+        # 移除第一个字符
+        text=$(printf '%s' "$text" | cut -c2-)
+        
+        if [ -n "$char" ]; then
+            # 获取颜色（使用模运算）
+            case $((i % 6)) in
+                0) color="$1" ;;
+                1) color="$2" ;;
+                2) color="$3" ;;
+                3) color="$4" ;;
+                4) color="$5" ;;
+                5) color="$6" ;;
+            esac
+            result="${result}${color}${char}"
+            i=$((i + 1))
+        fi
+    done
+    
+    printf '%b%s%b\n' "" "${result}" "${NC}"
+}
+
+# 检查是否直接执行此脚本
+if [ "$0" = "${0##*/}" ] || [ "$0" = "./${0##*/}" ]; then
+    # 直接执行时运行测试
+    test_colors
+    echo ""
+    color_echo "${BOLD}" "=== 简单彩虹文字示例 ==="
+    rainbow_text_simple "这是一个彩虹文字效果示例！"
+    
+    echo ""
+    color_echo "${BOLD}" "=== 颜色消息示例 ==="
+    print_error "这是一个错误消息"
+    print_warn "这是一个警告消息"
+    print_success "这是一个成功消息"
+    print_info "这是一个信息消息"
+    print_debug "这是一个调试消息"
+fi
+
+# 导出颜色变量供其他脚本使用
+export NC BLACK RED GREEN YELLOW BLUE PURPLE CYAN WHITE
+export BRIGHT_BLACK BRIGHT_RED BRIGHT_GREEN BRIGHT_YELLOW BRIGHT_BLUE BRIGHT_PURPLE BRIGHT_CYAN BRIGHT_WHITE
+export BG_BLACK BG_RED BG_GREEN BG_YELLOW BG_BLUE BG_PURPLE BG_CYAN BG_WHITE
+export BOLD DIM ITALIC UNDERLINE BLINK REVERSE HIDDEN STRIKETHROUGH

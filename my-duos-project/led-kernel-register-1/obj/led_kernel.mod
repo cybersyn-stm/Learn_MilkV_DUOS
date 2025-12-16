@@ -1,0 +1,2 @@
+/home/cybersyn/duos/my-duos-project/led-kernel-register-1/led_kernel.o
+

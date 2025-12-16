@@ -51,10 +51,22 @@ prepare-src:
 	fi
 
 # 清理
+
+# 清理 - 完全控制清理过程
 clean:
+	@echo "开始清理..."
+	
+	@# 清理构建产物
 	@rm -rf $(OBJ_DIR)
-	@rm -f led_kernel.c led_kernel.ko 
-	@if [ -d $(kdir) ]; then \
-		$(MAKE) -C $(kdir) M=$(shell pwd) clean >/dev/null 2>&1 || true; \
-	fi
-	@echo "清理完成！"
+	@rm -f led_kernel.c led_kernel.ko
+	
+	@# 只清理内核构建相关的特定文件
+	@rm -f .led_kernel*.cmd led_kernel.mod.c modules.order Module.symvers 2>/dev/null || true
+	@rm -rf .tmp_versions 2>/dev/null || true
+	
+	@echo "清理完成！（保留 compile_commands.json）"
+
+# 完整清理（包括JSON文件）
+distclean: clean
+	@rm -f compile_commands.json compile_commands.json.backup
+	@echo "完全清理完成！"
