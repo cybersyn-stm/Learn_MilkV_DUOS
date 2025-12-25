@@ -1,1 +1,0 @@
-cmd_/home/cybersyn/duos/my-duos-project/led-kernel-register-1/modules.order := {   echo /home/cybersyn/duos/my-duos-project/led-kernel-register-1/led_kernel.ko; :; } | awk '!x[$$0]++' - > /home/cybersyn/duos/my-duos-project/led-kernel-register-1/modules.order

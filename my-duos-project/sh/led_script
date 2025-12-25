@@ -89,9 +89,9 @@ verify_module_loading(){
         #echo -e "${GREEN}Module ${MODULE_NAME} loaded successfully.${NC}"
 
         echo -e "${YELLOW}Module information:${NC}"
-        lsmod | grep "^${MODULE_NAME}[[:space:]]"
+        lsmod | grep "^${MODULE_NAME}[[:space:]]" //将lsmod的输出通过管道传递给grep命令，查找以MODULE_NAME开头的行
 
-        if [ -d "/dev" ]; then
+        if [ -d "/dev" ]; then //查找/dev目录是否存在
             echo -e "${YELLOW}Related device files:${NC}"
             ls -la /dev/*led* 2>/dev/null || echo "No /dev entries found for ${MODULE_NAME}."
         fi
@@ -112,7 +112,7 @@ load_module() {
     # 使用绝对路径加载模块
     insmod "$(pwd)/$MODULE_FILE"
     
-    if [ $? -eq 0 ]; then
+    if [ $? -eq 0 ]; then #?执行上个命令的退出状态码，0表示成功
         echo -e "${GREEN}Success Loading $MODULE_FILE${NC}"
         return 0
     else
