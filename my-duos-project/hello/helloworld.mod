@@ -1,2 +1,0 @@
-/home/cybersyn/duos/my-duos-project/hello/helloworld.o
-

@@ -1,0 +1,1 @@
+cmd_/home/cybersyn/duos/my-duos-project/platform-led/src/platform_led.mod := { echo  /home/cybersyn/duos/my-duos-project/platform-led/src/platform_led.o;  echo; } > /home/cybersyn/duos/my-duos-project/platform-led/src/platform_led.mod
