@@ -1,0 +1,19 @@
+[
+  {
+    "arguments": [
+      "/home/cybersyn/duos/duo-examples/host-tools/gcc/riscv64-linux-musl-x86_64/bin/riscv64-unknown-linux-musl-gcc",
+      "-mcmodel=medany",
+      "-mabi=lp64d",
+      "-O3",
+      "-DNDEBUG",
+      "-I/home/cybersyn/duos/duo-examples/include/system",
+      "-c",
+      "-o",
+      "helloworld.o",
+      "helloworld.c"
+    ],
+    "directory": "/home/cybersyn/duos/duo-examples/hello-world",
+    "file": "/home/cybersyn/duos/duo-examples/hello-world/helloworld.c",
+    "output": "/home/cybersyn/duos/duo-examples/hello-world/helloworld.o"
+  }
+]

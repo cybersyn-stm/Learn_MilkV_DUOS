@@ -2,22 +2,24 @@
   {
     "arguments": [
       "/home/cybersyn/duo-buildroot-sdk-v2/host-tools/gcc/riscv64-linux-musl-x86_64/bin/riscv64-unknown-linux-musl-gcc",
-      "-Wp,-MMD,/home/cybersyn/duos/my-duos-project/led-kernel/.led_kernel.o.d",
+      "-Wp,-MMD,/home/cybersyn/duos/my-duos-project/led-ctrl/led-kernel-register/.led_kernel.o.d",
       "-nostdinc",
       "-isystem",
       "/home/cybersyn/duo-buildroot-sdk-v2/host-tools/gcc/riscv64-linux-musl-x86_64/bin/../lib/gcc/riscv64-unknown-linux-musl/10.2.0/include",
-      "-I./arch/riscv/include",
+      "-I/home/cybersyn/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include",
       "-I./arch/riscv/include/generated",
+      "-I/home/cybersyn/duo-buildroot-sdk-v2/linux_5.10/include",
       "-I./include",
-      "-I./arch/riscv/include/uapi",
+      "-I/home/cybersyn/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include/uapi",
       "-I./arch/riscv/include/generated/uapi",
-      "-I./include/uapi",
+      "-I/home/cybersyn/duo-buildroot-sdk-v2/linux_5.10/include/uapi",
       "-I./include/generated/uapi",
       "-include",
-      "./include/linux/kconfig.h",
+      "/home/cybersyn/duo-buildroot-sdk-v2/linux_5.10/include/linux/kconfig.h",
       "-include",
-      "./include/linux/compiler_types.h",
+      "/home/cybersyn/duo-buildroot-sdk-v2/linux_5.10/include/linux/compiler_types.h",
       "-D__KERNEL__",
+      "-fmacro-prefix-map=/home/cybersyn/duo-buildroot-sdk-v2/linux_5.10/=",
       "-Wall",
       "-Wundef",
       "-Werror=strict-prototypes",
@@ -60,7 +62,6 @@
       "-Wno-restrict",
       "-Wno-maybe-uninitialized",
       "-fno-strict-overflow",
-      "-fno-stack-check",
       "-Werror=date-time",
       "-Werror=incompatible-pointer-types",
       "-Werror=designated-init",
@@ -71,11 +72,11 @@
       "-DKBUILD_MODNAME=\"led_kernel\"",
       "-c",
       "-o",
-      "/home/cybersyn/duos/my-duos-project/led-kernel/led_kernel.o",
-      "/home/cybersyn/duos/my-duos-project/led-kernel/led_kernel.c"
+      "/home/cybersyn/duos/my-duos-project/led-ctrl/led-kernel-register/led_kernel.o",
+      "/home/cybersyn/duos/my-duos-project/led-ctrl/led-kernel-register/led_kernel.c"
     ],
-    "directory": "/home/cybersyn/duo-buildroot-sdk-v2/linux_5.10",
-    "file": "/home/cybersyn/duos/my-duos-project/led-kernel/led_kernel.c",
-    "output": "/home/cybersyn/duos/my-duos-project/led-kernel/led_kernel.o"
+    "directory": "/home/cybersyn/duo-buildroot-sdk-v2/linux_5.10/build/sg2000_milkv_duos_musl_riscv64_sd",
+    "file": "/home/cybersyn/duos/my-duos-project/led-ctrl/led-kernel-register/led_kernel.c",
+    "output": "/home/cybersyn/duos/my-duos-project/led-ctrl/led-kernel-register/led_kernel.o"
   }
 ]

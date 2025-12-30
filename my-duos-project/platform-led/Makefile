@@ -29,9 +29,13 @@ all :
 
 clean :
 	@echo "Cleaning up..."
-	@$(MAKE) -C $(KDIR) M=$(PWD) clean
 	@rm -f *.ko
 	@rm -f *.c
+	@rm -f src/*.mod.c src/*.o src/*.ko src/*mod
+	@rm -f Module.symvers
+	@rm -f modules.order
+
+
 
 send :
 	@scp src/platform_led.ko root@192.168.42.1:/root/

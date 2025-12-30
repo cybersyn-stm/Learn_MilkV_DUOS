@@ -1,6 +1,7 @@
 #include "linux/export.h"
 #include "linux/kern_levels.h"
 #include <linux/delay.h>
+#include <linux/errno.h>
 #include <linux/fs.h>
 #include <linux/gpio.h>
 #include <linux/init.h>

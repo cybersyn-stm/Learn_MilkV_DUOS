@@ -10,7 +10,7 @@ SRC_DIR := src
 OBJ_DIR := obj
 
 # 内核源码目录
-kdir := /home/cybersyn/duo-buildroot-sdk-v2/linux_5.10
+kdir := /home/cybersyn/duo-buildroot-sdk-v2/linux_5.10/build/sg2000_milkv_duos_musl_riscv64_sd/
 
 # 启用详细输出（这有助于bear捕获命令）
 V ?= 0

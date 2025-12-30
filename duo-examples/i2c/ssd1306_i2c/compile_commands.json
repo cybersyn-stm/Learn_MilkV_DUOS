@@ -1,0 +1,20 @@
+[
+  {
+    "arguments": [
+      "/home/cybersyn/duo-examples/host-tools/gcc/riscv64-linux-musl-x86_64/bin/riscv64-unknown-linux-musl-gcc",
+      "-I/home/cybersyn/duo-buildroot-sdk-v2/ramdisk/initramfs/glibc_riscv64/usr/include/",
+      "-mcmodel=medany",
+      "-mabi=lp64d",
+      "-O3",
+      "-DNDEBUG",
+      "-I/home/cybersyn/duo-examples/include/system",
+      "-c",
+      "-o",
+      "ssd1306_i2c.o",
+      "ssd1306_i2c.c"
+    ],
+    "directory": "/home/cybersyn/duo-examples/i2c/ssd1306_i2c",
+    "file": "/home/cybersyn/duo-examples/i2c/ssd1306_i2c/ssd1306_i2c.c",
+    "output": "/home/cybersyn/duo-examples/i2c/ssd1306_i2c/ssd1306_i2c.o"
+  }
+]
