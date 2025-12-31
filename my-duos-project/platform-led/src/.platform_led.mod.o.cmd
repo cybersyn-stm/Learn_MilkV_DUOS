@@ -3,6 +3,7 @@ cmd_/home/cybersyn/duos/my-duos-project/platform-led/src/platform_led.mod.o := /
 source_/home/cybersyn/duos/my-duos-project/platform-led/src/platform_led.mod.o := /home/cybersyn/duos/my-duos-project/platform-led/src/platform_led.mod.c
 
 deps_/home/cybersyn/duos/my-duos-project/platform-led/src/platform_led.mod.o := \
+    $(wildcard include/config/module/unload.h) \
     $(wildcard include/config/retpoline.h) \
   /home/cybersyn/duo-buildroot-sdk-v2/linux_5.10/include/linux/kconfig.h \
     $(wildcard include/config/cc/version/text.h) \
@@ -35,7 +36,6 @@ deps_/home/cybersyn/duos/my-duos-project/platform-led/src/platform_led.mod.o := 
     $(wildcard include/config/ftrace/mcount/record.h) \
     $(wildcard include/config/kprobes.h) \
     $(wildcard include/config/have/static/call/inline.h) \
-    $(wildcard include/config/module/unload.h) \
     $(wildcard include/config/constructors.h) \
     $(wildcard include/config/function/error/injection.h) \
   /home/cybersyn/duo-buildroot-sdk-v2/linux_5.10/include/linux/list.h \
