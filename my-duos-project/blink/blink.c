@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <wiringx.h>
-
 int main() {
     // Duo/Duo256M: LED = 25
     // DuoS:        LED =  0

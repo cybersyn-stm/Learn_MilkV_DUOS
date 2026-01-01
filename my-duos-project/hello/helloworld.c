@@ -1,4 +1,6 @@
 // helloworld.c
+#include "errno.h"
+#include "linux/i2c-dev.h"
 #include "linux/init.h"
 #include "linux/module.h"
 #include "linux/printk.h"

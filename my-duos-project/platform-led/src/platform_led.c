@@ -1,4 +1,5 @@
 #include "asm-generic/gpio.h"
+#include "linux/delay.h"
 #include "linux/device.h"
 #include "linux/export.h"
 #include "linux/fs.h"
@@ -11,7 +12,6 @@
 #include "linux/platform_device.h"
 #include "linux/printk.h"
 #include "linux/uaccess.h"
-
 int gpio_num;
 
 int led_open(struct inode *inode, struct file *file) {
@@ -22,6 +22,8 @@ int led_open(struct inode *inode, struct file *file) {
 ssize_t led_write(struct file *file, const char __user *user_buf, size_t size,
                   loff_t *loff) {
     char kernel_buf[64] = {0};
+    char buff_handle[64];
+    int i;
     size_t len = min(size, sizeof(kernel_buf) - 1);
 
     pr_info("led_write, size=%zu\n", size);
@@ -29,16 +31,33 @@ ssize_t led_write(struct file *file, const char __user *user_buf, size_t size,
     if (copy_from_user(kernel_buf, user_buf, len) != 0) {
         pr_info("copy_from_user error\n");
         return -EFAULT;
-    }
-
-    // 典型 echo '0' 的数据是 "0\n"，我们只看第一个字符
-    if (kernel_buf[0] == '1') {
-        gpio_set_value(gpio_num, 1);
-    } else if (kernel_buf[0] == '0') {
-        gpio_set_value(gpio_num, 0);
     } else {
-        pr_info("invalid value: %c\n", kernel_buf[0]);
-        return -EINVAL;
+        pr_info("copy_from_user succed, kernel_buf=%s\n", kernel_buf);
+        for (i = 0; i < len && kernel_buf[i] != '\0'; i++) {
+            if (kernel_buf[i] != '\n' && kernel_buf[i] != '\r') {
+                buff_handle[i] = kernel_buf[i];
+            } else {
+                buff_handle[i] = '\0';
+                break;
+            }
+        }
+    }
+    if (strcmp(buff_handle, "on") == 0) {
+        gpio_set_value(gpio_num, 1);
+        pr_info("LED is ON\n");
+    } else if (strcmp(buff_handle, "off") == 0) {
+        gpio_set_value(gpio_num, 0);
+        pr_info("LED is OFF\n");
+    } else if (strcmp(buff_handle, "flash") == 0) {
+        pr_info("LED is flash\n");
+        for (i = 0; i < 5; i++) {
+            gpio_set_value(gpio_num, 1);
+            msleep(200);
+            gpio_set_value(gpio_num, 0);
+            msleep(200);
+        }
+    } else {
+        pr_info("Invalid command. Use 'on' or 'off'.\n");
     }
 
     return size; // 非常重要：告诉用户态“我处理了 size 字节”

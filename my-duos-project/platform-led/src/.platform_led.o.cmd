@@ -823,6 +823,8 @@ deps_/home/cybersyn/duos/my-duos-project/platform-led/src/platform_led.o := \
   /home/cybersyn/duo-buildroot-sdk-v2/linux_5.10/include/linux/pinctrl/machine.h \
   /home/cybersyn/duo-buildroot-sdk-v2/linux_5.10/include/linux/gpio/consumer.h \
     $(wildcard include/config/gpio/sysfs.h) \
+  /home/cybersyn/duo-buildroot-sdk-v2/linux_5.10/include/linux/delay.h \
+  /home/cybersyn/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include/asm/delay.h \
   /home/cybersyn/duo-buildroot-sdk-v2/linux_5.10/include/linux/gpio.h \
     $(wildcard include/config/arch/have/custom/gpio/h.h) \
   /home/cybersyn/duo-buildroot-sdk-v2/linux_5.10/include/linux/miscdevice.h \
