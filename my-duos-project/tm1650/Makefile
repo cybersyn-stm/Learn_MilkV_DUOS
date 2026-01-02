@@ -12,9 +12,13 @@ LDFLAGS =
 LIBS    =
 
 all: $(TARGET)
+	scp $(TARGET) root@192.168.42.1:/root/
 
 $(TARGET): $(SRCS)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LIBS)
 
 clean:
 	rm -f $(TARGET)
+
+send: 
+	scp $(TARGET) root@192.168.42.1:/root/
