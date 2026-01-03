@@ -7,7 +7,7 @@ SRCS    = tm1650_demo.c
 CC =/home/cybersyn/duo-buildroot-sdk-v2/host-tools/gcc/riscv64-linux-musl-x86_64/bin/riscv64-unknown-linux-musl-gcc
 
 # 你可以在命令行覆盖 CFLAGS / LDFLAGS / LIBS
-CFLAGS  = -I/home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/build/sg2000_milkv_duos_musl_riscv64_sd/include/
+CFLAGS  = -I/home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/build/sg2000_milkv_duos_musl_riscv64_sd/
 LDFLAGS =
 LIBS    =
 
