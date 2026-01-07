@@ -1,0 +1,1 @@
+cmd_/home/cybersyn/duos/my-duos-project/kernelmode/tm1650_demo_1/modules.order := {   echo /home/cybersyn/duos/my-duos-project/kernelmode/tm1650_demo_1/src/tm1650.ko; :; } | awk '!x[$$0]++' - > /home/cybersyn/duos/my-duos-project/kernelmode/tm1650_demo_1/modules.order
