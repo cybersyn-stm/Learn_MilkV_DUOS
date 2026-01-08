@@ -22,10 +22,10 @@ static const uint8_t segment_code[] = {0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D,
 
 /* 驱动私有数据结构 */
 struct tm1650_data {
-  struct i2c_client *client;
-  uint8_t brightness;
-  uint8_t display[4];
-  struct mutex lock;
+    struct i2c_client *client;
+    uint8_t brightness;
+    uint8_t display[4];
+    struct mutex lock;
 };
 
 /**
@@ -36,25 +36,25 @@ struct tm1650_data {
  */
 static int tm1650_write_byte(struct i2c_client *client, uint8_t addr,
                              uint8_t data) {
-  struct i2c_msg msg;
-  int ret;
+    struct i2c_msg msg;
+    int ret;
 
-  dev_dbg(&client->dev, "write:  addr=0x%02x, data=0x%02x\n", addr, data);
+    dev_dbg(&client->dev, "write:  addr=0x%02x, data=0x%02x\n", addr, data);
 
-  /* 构造 I²C 消息 */
-  msg.addr = addr; /* 从机地址 */
-  msg.flags = 0;   /* 写操作 */
-  msg.len = 1;     /* 只发 1 个字节 */
-  msg.buf = &data; /* 数据缓冲区 */
+    /* 构造 I²C 消息 */
+    msg.addr = addr; /* 从机地址 */
+    msg.flags = 0;   /* 写操作 */
+    msg.len = 1;     /* 只发 1 个字节 */
+    msg.buf = &data; /* 数据缓冲区 */
 
-  ret = i2c_transfer(client->adapter, &msg, 1);
+    ret = i2c_transfer(client->adapter, &msg, 1);
 
-  if (ret != 1) {
-    dev_err(&client->dev, "write to addr 0x%02x failed:  %d\n", addr, ret);
-    return -EIO;
-  }
+    if (ret != 1) {
+        dev_err(&client->dev, "write to addr 0x%02x failed:  %d\n", addr, ret);
+        return -EIO;
+    }
 
-  return 0;
+    return 0;
 }
 
 /**
@@ -62,90 +62,90 @@ static int tm1650_write_byte(struct i2c_client *client, uint8_t addr,
  */
 static int tm1650_read_byte(struct i2c_client *client, uint8_t addr,
                             uint8_t *data) {
-  struct i2c_msg msg;
-  uint8_t buf;
-  int ret;
+    struct i2c_msg msg;
+    uint8_t buf;
+    int ret;
 
-  dev_dbg(&client->dev, "read: addr=0x%02x\n", addr);
+    dev_dbg(&client->dev, "read: addr=0x%02x\n", addr);
 
-  /* 读操作：直接从地址读 1 个字节 */
-  msg.addr = addr;
-  msg.flags = I2C_M_RD; /* 读标志 */
-  msg.len = 1;
-  msg.buf = &buf;
+    /* 读操作：直接从地址读 1 个字节 */
+    msg.addr = addr;
+    msg.flags = I2C_M_RD; /* 读标志 */
+    msg.len = 1;
+    msg.buf = &buf;
 
-  ret = i2c_transfer(client->adapter, &msg, 1);
+    ret = i2c_transfer(client->adapter, &msg, 1);
 
-  if (ret != 1) {
-    dev_err(&client->dev, "read from addr 0x%02x failed: %d\n", addr, ret);
-    return -EIO;
-  }
+    if (ret != 1) {
+        dev_err(&client->dev, "read from addr 0x%02x failed: %d\n", addr, ret);
+        return -EIO;
+    }
 
-  *data = buf;
-  return 0;
+    *data = buf;
+    return 0;
 }
 
 /**
  * 初始化 TM1650
  */
 static int tm1650_init(struct tm1650_data *data) {
-  uint8_t cmd;
-  int ret;
+    uint8_t cmd;
+    int ret;
 
-  /* 构建命令字
-   * bit7-bit4:  保留或亮度
-   * bit3: 显示开关（1=开）
-   * bit2-bit0: 亮度（0-7）
-   */
-  cmd = 0x80;                              /* 基础命令 */
-  cmd |= ((data->brightness & 0x07) << 4); /* 设置亮度 */
-  cmd |= 0x01;                             /* 使能显示 */
+    /* 构建命令字
+     * bit7-bit4:  保留或亮度
+     * bit3: 显示开关（1=开）
+     * bit2-bit0: 亮度（0-7）
+     */
+    cmd = 0x80;                              /* 基础命令 */
+    cmd |= ((data->brightness & 0x07) << 4); /* 设置亮度 */
+    cmd |= 0x01;                             /* 使能显示 */
 
-  ret = tm1650_write_byte(data->client, TM1650_ADDR_CMD, cmd);
-  if (ret < 0) {
-    dev_err(&data->client->dev, "init failed\n");
-    return ret;
-  }
+    ret = tm1650_write_byte(data->client, TM1650_ADDR_CMD, cmd);
+    if (ret < 0) {
+        dev_err(&data->client->dev, "init failed\n");
+        return ret;
+    }
 
-  dev_info(&data->client->dev, "TM1650 initialized, brightness=%u\n",
-           data->brightness);
-  return 0;
+    dev_info(&data->client->dev, "TM1650 initialized, brightness=%u\n",
+             data->brightness);
+    return 0;
 }
 
 /**
  * 显示一个数字（0-15）在指定位置（0-3）
  */
 static int tm1650_display_digit(struct tm1650_data *data, int pos, int digit) {
-  uint8_t addrs[] = {TM1650_ADDR_DIG1, TM1650_ADDR_DIG2, TM1650_ADDR_DIG3,
-                     TM1650_ADDR_DIG4};
-  uint8_t code;
-  int ret;
+    uint8_t addrs[] = {TM1650_ADDR_DIG1, TM1650_ADDR_DIG2, TM1650_ADDR_DIG3,
+                       TM1650_ADDR_DIG4};
+    uint8_t code;
+    int ret;
 
-  if (pos < 0 || pos > 3 || digit < 0 || digit > 15)
-    return -EINVAL;
+    if (pos < 0 || pos > 3 || digit < 0 || digit > 15)
+        return -EINVAL;
 
-  code = segment_code[digit];
+    code = segment_code[digit];
 
-  mutex_lock(&data->lock);
-  ret = tm1650_write_byte(data->client, addrs[pos], code);
-  if (ret == 0)
-    data->display[pos] = digit;
-  mutex_unlock(&data->lock);
+    mutex_lock(&data->lock);
+    ret = tm1650_write_byte(data->client, addrs[pos], code);
+    if (ret == 0)
+        data->display[pos] = digit;
+    mutex_unlock(&data->lock);
 
-  return ret;
+    return ret;
 }
 
 /**
  * 清除所有显示
  */
 static int tm1650_clear_display(struct tm1650_data *data) {
-  int i;
+    int i;
 
-  for (i = 0; i < 4; i++) {
-    tm1650_display_digit(data, i, 0);
-  }
+    for (i = 0; i < 4; i++) {
+        tm1650_display_digit(data, i, 0);
+    }
 
-  return 0;
+    return 0;
 }
 
 /* ============= sysfs 属性接口 ============= */
@@ -155,32 +155,32 @@ static int tm1650_clear_display(struct tm1650_data *data) {
  */
 static ssize_t brightness_show(struct device *dev,
                                struct device_attribute *attr, char *buf) {
-  struct i2c_client *client = to_i2c_client(dev);
-  struct tm1650_data *data = i2c_get_clientdata(client);
+    struct i2c_client *client = to_i2c_client(dev);
+    struct tm1650_data *data = i2c_get_clientdata(client);
 
-  return sprintf(buf, "%u\n", data->brightness);
+    return sprintf(buf, "%u\n", data->brightness);
 }
 
 static ssize_t brightness_store(struct device *dev,
                                 struct device_attribute *attr, const char *buf,
                                 size_t count) {
-  struct i2c_client *client = to_i2c_client(dev);
-  struct tm1650_data *data = i2c_get_clientdata(client);
-  uint8_t brightness;
+    struct i2c_client *client = to_i2c_client(dev);
+    struct tm1650_data *data = i2c_get_clientdata(client);
+    uint8_t brightness;
 
-  if (kstrtou8(buf, 10, &brightness) < 0)
-    return -EINVAL;
+    if (kstrtou8(buf, 10, &brightness) < 0)
+        return -EINVAL;
 
-  if (brightness > 7)
-    brightness = 7;
+    if (brightness > 7)
+        brightness = 7;
 
-  mutex_lock(&data->lock);
-  data->brightness = brightness;
-  mutex_unlock(&data->lock);
+    mutex_lock(&data->lock);
+    data->brightness = brightness;
+    mutex_unlock(&data->lock);
 
-  tm1650_init(data);
+    tm1650_init(data);
 
-  return count;
+    return count;
 }
 
 /**
@@ -189,28 +189,28 @@ static ssize_t brightness_store(struct device *dev,
  */
 static ssize_t display_show(struct device *dev, struct device_attribute *attr,
                             char *buf) {
-  struct i2c_client *client = to_i2c_client(dev);
-  struct tm1650_data *data = i2c_get_clientdata(client);
+    struct i2c_client *client = to_i2c_client(dev);
+    struct tm1650_data *data = i2c_get_clientdata(client);
 
-  return sprintf(buf, "%d %d %d %d\n", data->display[0], data->display[1],
-                 data->display[2], data->display[3]);
+    return sprintf(buf, "%d %d %d %d\n", data->display[0], data->display[1],
+                   data->display[2], data->display[3]);
 }
 
 static ssize_t display_store(struct device *dev, struct device_attribute *attr,
                              const char *buf, size_t count) {
-  struct i2c_client *client = to_i2c_client(dev);
-  struct tm1650_data *data = i2c_get_clientdata(client);
-  int d0, d1, d2, d3;
+    struct i2c_client *client = to_i2c_client(dev);
+    struct tm1650_data *data = i2c_get_clientdata(client);
+    int d0, d1, d2, d3;
 
-  if (sscanf(buf, "%d %d %d %d", &d0, &d1, &d2, &d3) != 4)
-    return -EINVAL;
+    if (sscanf(buf, "%d %d %d %d", &d0, &d1, &d2, &d3) != 4)
+        return -EINVAL;
 
-  tm1650_display_digit(data, 0, d0);
-  tm1650_display_digit(data, 1, d1);
-  tm1650_display_digit(data, 2, d2);
-  tm1650_display_digit(data, 3, d3);
+    tm1650_display_digit(data, 0, d0);
+    tm1650_display_digit(data, 1, d1);
+    tm1650_display_digit(data, 2, d2);
+    tm1650_display_digit(data, 3, d3);
 
-  return count;
+    return count;
 }
 
 /**
@@ -218,12 +218,12 @@ static ssize_t display_store(struct device *dev, struct device_attribute *attr,
  */
 static ssize_t clear_store(struct device *dev, struct device_attribute *attr,
                            const char *buf, size_t count) {
-  struct i2c_client *client = to_i2c_client(dev);
-  struct tm1650_data *data = i2c_get_clientdata(client);
+    struct i2c_client *client = to_i2c_client(dev);
+    struct tm1650_data *data = i2c_get_clientdata(client);
 
-  tm1650_clear_display(data);
+    tm1650_clear_display(data);
 
-  return count;
+    return count;
 }
 
 /* 定义 sysfs 属性 */
@@ -246,70 +246,70 @@ static struct attribute_group tm1650_attr_group = {
  */
 static int tm1650_probe(struct i2c_client *client,
                         const struct i2c_device_id *id) {
-  struct tm1650_data *data;
-  int ret;
+    struct tm1650_data *data;
+    int ret;
 
-  dev_info(&client->dev, "===== TM1650 PROBE START =====\n");
-  dev_info(&client->dev, "addr:  0x%02x, adapter: %s (bus %d)\n", client->addr,
-           client->adapter->name, client->adapter->nr);
+    dev_info(&client->dev, "===== TM1650 PROBE START =====\n");
+    dev_info(&client->dev, "addr:  0x%02x, adapter: %s (bus %d)\n",
+             client->addr, client->adapter->name, client->adapter->nr);
 
-  /* 分配驱动私有数据 */
-  data = devm_kzalloc(&client->dev, sizeof(struct tm1650_data), GFP_KERNEL);
-  if (!data) {
-    dev_err(&client->dev, "Failed to allocate memory\n");
-    return -ENOMEM;
-  }
-  dev_info(&client->dev, "Memory allocated\n");
+    /* 分配驱动私有数据 */
+    data = devm_kzalloc(&client->dev, sizeof(struct tm1650_data), GFP_KERNEL);
+    if (!data) {
+        dev_err(&client->dev, "Failed to allocate memory\n");
+        return -ENOMEM;
+    }
+    dev_info(&client->dev, "Memory allocated\n");
 
-  data->client = client;
-  data->brightness = 7; /* 默认最亮 */
-  mutex_init(&data->lock);
+    data->client = client;
+    data->brightness = 7; /* 默认最亮 */
+    mutex_init(&data->lock);
 
-  /* 绑定驱动数据到设备 */
-  i2c_set_clientdata(client, data);
-  dev_info(&client->dev, "Client data set\n");
+    /* 绑定驱动数据到设备 */
+    i2c_set_clientdata(client, data);
+    dev_info(&client->dev, "Client data set\n");
 
-  /* 初始化硬件 */
-  ret = tm1650_init(data);
-  if (ret < 0) {
-    dev_err(&client->dev, "tm1650_init failed:  %d\n", ret);
-    return ret;
-  }
-  dev_info(&client->dev, "Hardware initialized\n");
+    /* 初始化硬件 */
+    ret = tm1650_init(data);
+    if (ret < 0) {
+        dev_err(&client->dev, "tm1650_init failed:  %d\n", ret);
+        return ret;
+    }
+    dev_info(&client->dev, "Hardware initialized\n");
 
-  /* 清除显示 */
-  tm1650_clear_display(data);
-  dev_info(&client->dev, "Display cleared\n");
+    /* 清除显示 */
+    tm1650_clear_display(data);
+    dev_info(&client->dev, "Display cleared\n");
 
-  /* 创建 sysfs 属性 */
-  dev_info(&client->dev, "Creating sysfs group.. .\n");
-  ret = sysfs_create_group(&client->dev.kobj, &tm1650_attr_group);
-  if (ret < 0) {
-    dev_err(&client->dev, "sysfs_create_group failed:  %d\n", ret);
-    return ret;
-  }
-  dev_info(&client->dev, "Sysfs group created\n");
+    /* 创建 sysfs 属性 */
+    dev_info(&client->dev, "Creating sysfs group.. .\n");
+    ret = sysfs_create_group(&client->dev.kobj, &tm1650_attr_group);
+    if (ret < 0) {
+        dev_err(&client->dev, "sysfs_create_group failed:  %d\n", ret);
+        return ret;
+    }
+    dev_info(&client->dev, "Sysfs group created\n");
 
-  dev_info(&client->dev, "===== TM1650 PROBE SUCCESS =====\n");
-  return 0;
+    dev_info(&client->dev, "===== TM1650 PROBE SUCCESS =====\n");
+    return 0;
 }
 
 /**
  * remove 函数：当设备被移除时调用
  */
 static int tm1650_remove(struct i2c_client *client) {
-  struct tm1650_data *data = i2c_get_clientdata(client);
+    struct tm1650_data *data = i2c_get_clientdata(client);
 
-  dev_info(&client->dev, "===== TM1650 REMOVE =====\n");
+    dev_info(&client->dev, "===== TM1650 REMOVE =====\n");
 
-  /* 删除 sysfs 属性 */
-  sysfs_remove_group(&client->dev.kobj, &tm1650_attr_group);
+    /* 删除 sysfs 属性 */
+    sysfs_remove_group(&client->dev.kobj, &tm1650_attr_group);
 
-  /* 清除显示 */
-  tm1650_clear_display(data);
+    /* 清除显示 */
+    tm1650_clear_display(data);
 
-  dev_info(&client->dev, "===== TM1650 REMOVED =====\n");
-  return 0;
+    dev_info(&client->dev, "===== TM1650 REMOVED =====\n");
+    return 0;
 }
 
 /* I2C 设备 ID 表 */

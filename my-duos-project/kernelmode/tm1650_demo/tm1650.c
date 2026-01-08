@@ -27,6 +27,10 @@ struct tm1650_t {
     struct i2c_client *client;
     uint8_t brightness;
     uint8_t display[4];
+    uint8_t dig1;
+    uint8_t dig2;
+    uint8_t dig3;
+    uint8_t dig4;
     struct mutex lock;
 };
 
@@ -73,8 +77,7 @@ static int tm1650_init(struct tm1650_t *data) {
 }
 
 static int tm1650_display_digit(struct tm1650_t *data, int pos, int digit) {
-    uint8_t addrs[] = {TM1650_ADDR_DIG1, TM1650_ADDR_DIG2, TM1650_ADDR_DIG3,
-                       TM1650_ADDR_DIG4};
+    uint8_t addrs[] = {data->dig1, data->dig2, data->dig3, data->dig4};
     uint8_t code;
     int ret;
 
@@ -160,6 +163,11 @@ static ssize_t display_store(struct device *dev, struct device_attribute *attr,
     return count;
 }
 
+static ssize_t test_show(struct device *dev, struct device_attribute *attr,
+                         char *buf) {
+    return sprintf(buf, "test\n");
+}
+
 static ssize_t clear_store(struct device *dev, struct device_attribute *attr,
                            const char *buf, size_t count) {
     struct i2c_client *client = to_i2c_client(dev);
@@ -173,10 +181,11 @@ static ssize_t clear_store(struct device *dev, struct device_attribute *attr,
 static DEVICE_ATTR_RW(brightness);
 static DEVICE_ATTR_RW(display);
 static DEVICE_ATTR_WO(clear);
+static DEVICE_ATTR_RO(test);
 
-static struct attribute *tm1650_attrs[] = {&dev_attr_brightness.attr,
-                                           &dev_attr_display.attr,
-                                           &dev_attr_clear.attr, NULL};
+static struct attribute *tm1650_attrs[] = {
+    &dev_attr_brightness.attr, &dev_attr_display.attr, &dev_attr_clear.attr,
+    &dev_attr_test.attr, NULL};
 
 static struct attribute_group tm1650_attr_group = {
     .attrs = tm1650_attrs,
@@ -191,7 +200,8 @@ static int tm1650_probe(struct i2c_client *client,
     dev_info(&client->dev, "addr: 0x%02x, adapter: %s (bus %d)\n", client->addr,
              client->adapter->name, client->adapter->nr);
 
-    data = devm_kzalloc(&client->dev, sizeof(struct tm1650_t), GFP_KERNEL);
+    data = devm_kzalloc(&client->dev, sizeof(struct tm1650_t),
+                        GFP_KERNEL); // 分配内存
     if (!data) {
         dev_err(&client->dev, "Failed to allocate memory\n");
         return -ENOMEM;
@@ -200,9 +210,13 @@ static int tm1650_probe(struct i2c_client *client,
 
     data->client = client;
     data->brightness = 7;
+    data->dig1 = TM1650_ADDR_DIG1;
+    data->dig2 = TM1650_ADDR_DIG2;
+    data->dig3 = TM1650_ADDR_DIG3;
+    data->dig4 = TM1650_ADDR_DIG4;
     mutex_init(&data->lock);
 
-    i2c_set_clientdata(client, data);
+    i2c_set_clientdata(client, data); // 将私人结构体写入 I2C 客户端结构体
     dev_info(&client->dev, "Client data set\n");
 
     ret = tm1650_init(data);
@@ -239,12 +253,12 @@ static int tm1650_remove(struct i2c_client *client) {
     return 0;
 }
 
-static const struct i2c_device_id tm1650_ids[] = {{TM1650_NAME, 0}, {}};
-MODULE_DEVICE_TABLE(i2c, tm1650_ids);
+// static const struct i2c_device_id tm1650_ids[] = {{TM1650_NAME, 0}, {}};
+// MODULE_DEVICE_TABLE(i2c, tm1650_ids);
 
 /* 设备树兼容性表 */
-static const struct of_device_id tm1650_of_match[] = {
-    {.compatible = "titanmicro,tm1650"}, {}};
+static const struct of_device_id tm1650_of_match[] = {{.compatible = "tm1650"},
+                                                      {}};
 MODULE_DEVICE_TABLE(of, tm1650_of_match);
 
 /* I2C 驱动结构 */
@@ -256,7 +270,7 @@ static struct i2c_driver tm1650_driver = {
         },
     .probe = tm1650_probe,
     .remove = tm1650_remove,
-    .id_table = tm1650_ids,
+    //.id_table = tm1650_ids,
 };
 
 /* 模块初始化 */

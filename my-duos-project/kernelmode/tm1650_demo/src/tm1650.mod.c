@@ -25,6 +25,5 @@ MODULE_INFO(retpoline, "Y");
 
 MODULE_INFO(depends, "");
 
-MODULE_ALIAS("of:N*T*Ctitanmicro,tm1650");
-MODULE_ALIAS("of:N*T*Ctitanmicro,tm1650C*");
-MODULE_ALIAS("i2c:tm1650");
+MODULE_ALIAS("of:N*T*Ctm1650");
+MODULE_ALIAS("of:N*T*Ctm1650C*");

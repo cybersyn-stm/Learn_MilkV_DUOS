@@ -1,0 +1,1 @@
+cmd_/home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_demo/Module.symvers := sed 's/ko$$/o/' /home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_demo/modules.order | scripts/mod/modpost     -o /home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_demo/Module.symvers -e -i Module.symvers   -T -
