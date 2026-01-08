@@ -1,3 +1,4 @@
+#include "linux/types.h"
 #include <linux/device.h>
 #include <linux/i2c.h>
 #include <linux/init.h>
@@ -92,12 +93,65 @@ static int ssd1306_init_display(struct i2c_client *client) {
     return 0;
 }
 
+/*Sysfs*/
+static ssize_t ssd1306_command_store(struct device *dev,
+                                     struct device_attribute *attr,
+                                     const char *buf, size_t count) {
+    struct i2c_client *client = to_i2c_client(dev);
+    uint8_t command;
+
+    if (sscanf(buf, "%hhx", &command) != 1) {
+        dev_err(dev, "Invalid command format\n");
+        return -EINVAL;
+    }
+    ssd1306_write_command(client, command);
+
+    return count;
+}
+
+static ssize_t ssd1306_data_store(struct device *dev,
+                                  struct device_attribute *attr,
+                                  const char *buf, size_t count) {
+    struct i2c_client *client = to_i2c_client(dev);
+    uint8_t data;
+
+    if (sscanf(buf, "%hhx", &data) != 1) {
+        dev_err(dev, "Invalid command format\n");
+        return -EINVAL;
+    }
+    ssd1306_write_data(client, data);
+
+    return count;
+}
+
+static ssize_t ssd1306_init_show(struct device *dev,
+                                 struct device_attribute *attr, char *buf) {
+    struct i2c_client *client = to_i2c_client(dev);
+    ssd1306_init_display(client);
+    return 0;
+}
+
+static DEVICE_ATTR_WO(ssd1306_command);
+static DEVICE_ATTR_WO(ssd1306_data);
+static DEVICE_ATTR_RO(ssd1306_init);
+
+static struct attribute *ssd1306_attrs[] = {
+    &dev_attr_ssd1306_command.attr,
+    &dev_attr_ssd1306_data.attr,
+    &dev_attr_ssd1306_init.attr,
+    NULL,
+};
+
+static struct attribute_group ssd1306_attr_group = {
+    .attrs = ssd1306_attrs,
+};
+
 static int ssd1306_probe(struct i2c_client *client,
                          const struct i2c_device_id *id) {
     struct ssd1306_data *data;
     int ret;
 
-    dev_info(&client->dev, "======Probing SSD1306 START======");
+    dev_info(&client->dev, "======Probing SSD1306 START====== \n");
     dev_info(&client->dev, "I2C Address: 0x%02x, Adapter: %s (bus %d)",
              client->addr, client->adapter->name, client->adapter->nr);
 
@@ -117,13 +171,20 @@ static int ssd1306_probe(struct i2c_client *client,
         return ret;
     }
     dev_info(&client->dev, "SSD1306 display initialized successfully");
-    dev_info(&client->dev, "======Probing SSD1306 SUCCESS======");
+    ret = sysfs_create_group(&client->dev.kobj, &ssd1306_attr_group);
+    if (ret) {
+        dev_err(&client->dev, "Failed to create sysfs group\n");
+        return ret;
+    } else {
+        dev_info(&client->dev, "Sysfs group created successfully\n");
+    }
+    dev_info(&client->dev, "======Probing SSD1306 SUCCESS======\n");
 
     return 0;
 }
 
 static int ssd1306_remove(struct i2c_client *client) {
-    dev_info(&client->dev, "======Removing SSD1306 driver======");
+    dev_info(&client->dev, "======Removing SSD1306 driver======\n");
     return 0;
 }
 

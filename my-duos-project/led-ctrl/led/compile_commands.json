@@ -2,14 +2,14 @@
   {
     "arguments": [
       "/home/cybersyn/duos/duo-examples/host-tools/gcc/riscv64-linux-musl-x86_64/bin/riscv64-unknown-linux-musl-gcc",
-      "-I/home/cybersyn/host-tools/gcc/riscv64-linux-x86_64/sysroot/usr/include",
+      "-I/home/cybersyn/duo-buildroot-sdk-v2/linux_5.10/build/sg2000_milkv_duos_musl_riscv64_sd/include/",
       "-c",
       "-o",
-      "led.o",
-      "led.c"
+      "obj/led.1.o",
+      "src/led.1.c"
     ],
-    "directory": "/home/cybersyn/duos/my-duos-project/led",
-    "file": "/home/cybersyn/duos/my-duos-project/led/led.c",
-    "output": "/home/cybersyn/duos/my-duos-project/led/led.o"
+    "directory": "/home/cybersyn/duos/my-duos-project/led-ctrl/led",
+    "file": "/home/cybersyn/duos/my-duos-project/led-ctrl/led/src/led.1.c",
+    "output": "/home/cybersyn/duos/my-duos-project/led-ctrl/led/obj/led.1.o"
   }
 ]
