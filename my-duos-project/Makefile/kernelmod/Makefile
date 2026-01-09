@@ -15,18 +15,17 @@ PWD  := $(shell pwd)
 # Module(s)
 obj-m += src/ssd1306.o
 
+ssd1306-y ?=
+
+ccflags-y ?= 
 # --------------------------------------------------------------------
 # Optional: strip flags that may confuse bear/clangd.
-# Enable only when needed:
-#   DISABLE_SPECIAL_FLAGS=1 bear -- make
 # --------------------------------------------------------------------
-ifeq ($(DISABLE_SPECIAL_FLAGS),1)
 BAD_FLAGS := -mno-ldd -fno-allow-store-data-races -fconserve-stack
 CFLAGS             := $(filter-out $(BAD_FLAGS),$(CFLAGS))
 KBUILD_CFLAGS      := $(filter-out $(BAD_FLAGS),$(KBUILD_CFLAGS))
 KBUILD_USERCFLAGS  := $(filter-out $(BAD_FLAGS),$(KBUILD_USERCFLAGS))
 export CFLAGS KBUILD_CFLAGS KBUILD_USERCFLAGS
-endif
 
 # Optional deploy (override as needed)
 DEPLOY ?= 0

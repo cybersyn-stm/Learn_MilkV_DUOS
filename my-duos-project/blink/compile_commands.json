@@ -2,8 +2,10 @@
   {
     "arguments": [
       "/home/cybersyn/duo-buildroot-sdk-v2/host-tools/gcc/riscv64-linux-musl-x86_64/bin/riscv64-unknown-linux-musl-gcc",
-      "-I/home/cybersyn/duos/duo-examples/include/system",
-      "-I/home/cybersyn/duo-buildroot-sdk-v2/linux_5.10/build/sg2000_milkv_duos_musl_riscv64_sd/",
+      "-O2",
+      "-Wall",
+      "--sysroot=/home/cybersyn/duo-buildroot-sdk-v2/host-tools/gcc/riscv64-linux-musl-x86_64/sysroot",
+      "-I/home/cybersyn/duos/wiringX/src/",
       "-c",
       "-o",
       "blink.o",

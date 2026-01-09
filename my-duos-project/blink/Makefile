@@ -1,29 +1,31 @@
-TARGET=blink
+# Minimal reusable Makefile (cross compile + clangd friendly)
+# Usage:
+#   make
+#   bear -- make
+#   make clean
 
-CC = /home/cybersyn/duo-buildroot-sdk-v2/host-tools/gcc/riscv64-linux-musl-x86_64/bin/riscv64-unknown-linux-musl-gcc
-CFLAGS = -I/home/cybersyn/duos/duo-examples/include/system\
-		 -I/home/cybersyn/host-tools/gcc/riscv64-linux-x86_64/sysroot/usr/include\
-		 -I/home/cybersyn/duo-buildroot-sdk-v2/linux_5.10/build/sg2000_milkv_duos_musl_riscv64_sd/
+CC := /home/cybersyn/duo-buildroot-sdk-v2/host-tools/gcc/riscv64-linux-musl-x86_64/bin/riscv64-unknown-linux-musl-gcc
+SYSROOT := /home/cybersyn/duo-buildroot-sdk-v2/host-tools/gcc/riscv64-linux-musl-x86_64/sysroot
 
-LDFLAGS = -L/home/cybersyn/duos/duo-examples/libs/system/musl_riscv64 -lwiringx
+APP  ?= blink
+SRCS ?= blink.c
+OBJS := $(SRCS:.c=.o)
 
-SOURCE = $(shell find -name *.c)
-OBJS = $(patsubst %.c,%.o,$(SOURCE))
+# Keep these flags so bear/clangd learns the target + sysroot.
+COMMON := --sysroot=$(SYSROOT) 
 
-$(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LDFLAGS)
+CFLAGS  ?= -O2 -Wall $(COMMON)
+CFLAGS 	+= -I/home/cybersyn/duos/wiringX/src/
+LDFLAGS ?= $(COMMON)
+LDLIBS  ?= -L/home/cybersyn/duos/duo-examples/libs/system/musl_riscv64 -lwiringx
+
+all: $(APP)
+
+$(APP): $(OBJS)
+	$(CC) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -o $@ -c $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
-.PHONY: clean debug
 clean:
-	@rm *.o -rf
-	@rm $(OBJS) -rf
-	@rm $(TARGET)
-debug:
-	@echo $(OBJS)
-	@echo $(SOURCE)
-	@echo $(LDFLAGS)
-	@echo $(CC)
-	@echo $(CFLAGS)
+	rm -f $(APP) $(OBJS)

@@ -13,20 +13,22 @@ KDIR ?= /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/build/sg2000_milkv_d
 PWD  := $(shell pwd)
 
 # Module(s)
-obj-m += src/ssd1306.o
+obj-m += ssd1306.o
 
+ssd1306-y := src/ssd1306.o src/ssd1306_misc.o
+ccflags-y += -I$(src)/include
 # --------------------------------------------------------------------
 # Optional: strip flags that may confuse bear/clangd.
 # Enable only when needed:
 #   DISABLE_SPECIAL_FLAGS=1 bear -- make
 # --------------------------------------------------------------------
-ifeq ($(DISABLE_SPECIAL_FLAGS),1)
+
 BAD_FLAGS := -mno-ldd -fno-allow-store-data-races -fconserve-stack
 CFLAGS             := $(filter-out $(BAD_FLAGS),$(CFLAGS))
 KBUILD_CFLAGS      := $(filter-out $(BAD_FLAGS),$(KBUILD_CFLAGS))
 KBUILD_USERCFLAGS  := $(filter-out $(BAD_FLAGS),$(KBUILD_USERCFLAGS))
 export CFLAGS KBUILD_CFLAGS KBUILD_USERCFLAGS
-endif
+
 
 # Optional deploy (override as needed)
 DEPLOY ?= 0
@@ -34,13 +36,18 @@ TARGET ?= root@192.168.42.1:/root/
 
 all:
 	$(MAKE) -C $(KDIR) M=$(PWD) modules
-	@cp -f src/ssd1306.ko ./
 	@rm Module.symvers
 	@rm modules.order
-ifeq ($(DEPLOY),1)
-	@scp src/ssd1306.ko $(TARGET)
-endif
+	@mkdir -p ./out
+	@mv *.mod ./out
+	@mv *.mod.o ./out
+	@mv *.mod.c ./out
+	@mv *.o ./out
+	@scp ssd1306.ko $(TARGET)
 
 clean:
-	$(MAKE) -C $(KDIR) M=$(PWD) clean
 	@rm -f *.ko
+	@rm -f *.c
+	@rm -f src/*.mod.c src/*.o src/*.ko src/*mod
+	@rm -f Module.symvers
+	@rm -f modules.orderrm -f *.ko

@@ -1,8 +1,8 @@
-cmd_/home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_demo_misc/src/ssd1306.o := /home/cybersyn/duo-buildroot-sdk-v2/host-tools/gcc/riscv64-linux-musl-x86_64/bin/riscv64-unknown-linux-musl-gcc -Wp,-MMD,/home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_demo_misc/src/.ssd1306.o.d -nostdinc -isystem /home/cybersyn/duo-buildroot-sdk-v2/host-tools/gcc/riscv64-linux-musl-x86_64/bin/../lib/gcc/riscv64-unknown-linux-musl/10.2.0/include -I/home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include -I./arch/riscv/include/generated -I/home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include -I./include -I/home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include/uapi -I./arch/riscv/include/generated/uapi -I/home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/uapi -I./include/generated/uapi -include /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/kconfig.h -include /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/compiler_types.h -D__KERNEL__ -fmacro-prefix-map=/home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/= -Wall -Wundef -Werror=strict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -fshort-wchar -fno-PIE -Werror=implicit-function-declaration -Werror=implicit-int -Werror=return-type -Wno-format-security -std=gnu89 -mabi=lp64 -mno-ldd -march=rv64imac -Wa,-march=rv64imafdcv0p7 -mno-save-restore -DCONFIG_PAGE_OFFSET=0xffffffe000000000 -mcmodel=medany -mstrict-align -fno-delete-null-pointer-checks -Wno-frame-address -Wno-format-truncation -Wno-format-overflow -Wno-address-of-packed-member -Os -fno-allow-store-data-races -Wframe-larger-than=2048 -fstack-protector-strong -Wno-unused-but-set-variable -Wimplicit-fallthrough -Wno-unused-const-variable -fomit-frame-pointer -Wdeclaration-after-statement -Wvla -Wno-pointer-sign -Wno-stringop-truncation -Wno-zero-length-bounds -Wno-array-bounds -Wno-stringop-overflow -Wno-restrict -Wno-maybe-uninitialized -fno-strict-overflow -fno-stack-check -fconserve-stack -Werror=date-time -Werror=incompatible-pointer-types -Werror=designated-init -Wno-packed-not-aligned  -DMODULE -mno-relax  -DKBUILD_BASENAME='"ssd1306"' -DKBUILD_MODNAME='"ssd1306"' -c -o /home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_demo_misc/src/ssd1306.o /home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_demo_misc/src/ssd1306.c
+cmd_/home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_test/src/ssd1306.o := /home/cybersyn/duo-buildroot-sdk-v2/host-tools/gcc/riscv64-linux-musl-x86_64/bin/riscv64-unknown-linux-musl-gcc -Wp,-MMD,/home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_test/src/.ssd1306.o.d -nostdinc -isystem /home/cybersyn/duo-buildroot-sdk-v2/host-tools/gcc/riscv64-linux-musl-x86_64/bin/../lib/gcc/riscv64-unknown-linux-musl/10.2.0/include -I/home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include -I./arch/riscv/include/generated -I/home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include -I./include -I/home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include/uapi -I./arch/riscv/include/generated/uapi -I/home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/uapi -I./include/generated/uapi -include /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/kconfig.h -include /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/compiler_types.h -D__KERNEL__ -fmacro-prefix-map=/home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/= -Wall -Wundef -Werror=strict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -fshort-wchar -fno-PIE -Werror=implicit-function-declaration -Werror=implicit-int -Werror=return-type -Wno-format-security -std=gnu89 -mabi=lp64 -march=rv64imac -Wa,-march=rv64imafdcv0p7 -mno-save-restore -DCONFIG_PAGE_OFFSET=0xffffffe000000000 -mcmodel=medany -mstrict-align -fno-delete-null-pointer-checks -Wno-frame-address -Wno-format-truncation -Wno-format-overflow -Wno-address-of-packed-member -Os -Wframe-larger-than=2048 -fstack-protector-strong -Wno-unused-but-set-variable -Wimplicit-fallthrough -Wno-unused-const-variable -fomit-frame-pointer -Wdeclaration-after-statement -Wvla -Wno-pointer-sign -Wno-stringop-truncation -Wno-zero-length-bounds -Wno-array-bounds -Wno-stringop-overflow -Wno-restrict -Wno-maybe-uninitialized -fno-strict-overflow -fno-stack-check -Werror=date-time -Werror=incompatible-pointer-types -Werror=designated-init -Wno-packed-not-aligned -I/home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_test/include  -DMODULE -mno-relax  -DKBUILD_BASENAME='"ssd1306"' -DKBUILD_MODNAME='"ssd1306"' -c -o /home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_test/src/ssd1306.o /home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_test/src/ssd1306.c
 
-source_/home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_demo_misc/src/ssd1306.o := /home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_demo_misc/src/ssd1306.c
+source_/home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_test/src/ssd1306.o := /home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_test/src/ssd1306.c
 
-deps_/home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_demo_misc/src/ssd1306.o := \
+deps_/home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_test/src/ssd1306.o := \
   /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/kconfig.h \
     $(wildcard include/config/cc/version/text.h) \
     $(wildcard include/config/cpu/big/endian.h) \
@@ -16,53 +16,6 @@ deps_/home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_demo_misc/src/ssd130
   /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/compiler-gcc.h \
     $(wildcard include/config/retpoline.h) \
     $(wildcard include/config/arch/use/builtin/bswap.h) \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/string.h \
-    $(wildcard include/config/binary/printf.h) \
-    $(wildcard include/config/fortify/source.h) \
-    $(wildcard include/config/kasan.h) \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/compiler.h \
-    $(wildcard include/config/trace/branch/profiling.h) \
-    $(wildcard include/config/profile/all/branches.h) \
-    $(wildcard include/config/stack/validation.h) \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/compiler_types.h \
-  arch/riscv/include/generated/asm/rwonce.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/asm-generic/rwonce.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/kasan-checks.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/types.h \
-    $(wildcard include/config/have/uid16.h) \
-    $(wildcard include/config/uid16.h) \
-    $(wildcard include/config/arch/dma/addr/t/64bit.h) \
-    $(wildcard include/config/phys/addr/t/64bit.h) \
-    $(wildcard include/config/64bit.h) \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/uapi/linux/types.h \
-  arch/riscv/include/generated/uapi/asm/types.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/uapi/asm-generic/types.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/asm-generic/int-ll64.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/uapi/asm-generic/int-ll64.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include/uapi/asm/bitsperlong.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/asm-generic/bitsperlong.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/uapi/asm-generic/bitsperlong.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/uapi/linux/posix_types.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/stddef.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/uapi/linux/stddef.h \
-  arch/riscv/include/generated/uapi/asm/posix_types.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/uapi/asm-generic/posix_types.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/kcsan-checks.h \
-    $(wildcard include/config/kcsan.h) \
-    $(wildcard include/config/kcsan/ignore/atomics.h) \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/uapi/linux/string.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include/asm/string.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/linkage.h \
-    $(wildcard include/config/arch/use/sym/annotations.h) \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/stringify.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/export.h \
-    $(wildcard include/config/modversions.h) \
-    $(wildcard include/config/module/rel/crcs.h) \
-    $(wildcard include/config/have/arch/prel32/relocations.h) \
-    $(wildcard include/config/modules.h) \
-    $(wildcard include/config/trim/unused/ksyms.h) \
-    $(wildcard include/config/unused/symbols.h) \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include/asm/linkage.h \
   /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/device.h \
     $(wildcard include/config/debug/devres.h) \
     $(wildcard include/config/prove/locking.h) \
@@ -87,6 +40,37 @@ deps_/home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_demo_misc/src/ssd130
     $(wildcard include/config/printk.h) \
     $(wildcard include/config/dynamic/debug.h) \
     $(wildcard include/config/dynamic/debug/core.h) \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/compiler.h \
+    $(wildcard include/config/trace/branch/profiling.h) \
+    $(wildcard include/config/profile/all/branches.h) \
+    $(wildcard include/config/stack/validation.h) \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/compiler_types.h \
+  arch/riscv/include/generated/asm/rwonce.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/asm-generic/rwonce.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/kasan-checks.h \
+    $(wildcard include/config/kasan.h) \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/types.h \
+    $(wildcard include/config/have/uid16.h) \
+    $(wildcard include/config/uid16.h) \
+    $(wildcard include/config/arch/dma/addr/t/64bit.h) \
+    $(wildcard include/config/phys/addr/t/64bit.h) \
+    $(wildcard include/config/64bit.h) \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/uapi/linux/types.h \
+  arch/riscv/include/generated/uapi/asm/types.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/uapi/asm-generic/types.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/asm-generic/int-ll64.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/uapi/asm-generic/int-ll64.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include/uapi/asm/bitsperlong.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/asm-generic/bitsperlong.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/uapi/asm-generic/bitsperlong.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/uapi/linux/posix_types.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/stddef.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/uapi/linux/stddef.h \
+  arch/riscv/include/generated/uapi/asm/posix_types.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/uapi/asm-generic/posix_types.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/kcsan-checks.h \
+    $(wildcard include/config/kcsan.h) \
+    $(wildcard include/config/kcsan/ignore/atomics.h) \
   /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/ratelimit.h \
   /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/ratelimit_types.h \
   /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/bits.h \
@@ -201,6 +185,17 @@ deps_/home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_demo_misc/src/ssd130
   /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/limits.h \
   /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/uapi/linux/limits.h \
   /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/vdso/limits.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/linkage.h \
+    $(wildcard include/config/arch/use/sym/annotations.h) \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/stringify.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/export.h \
+    $(wildcard include/config/modversions.h) \
+    $(wildcard include/config/module/rel/crcs.h) \
+    $(wildcard include/config/have/arch/prel32/relocations.h) \
+    $(wildcard include/config/modules.h) \
+    $(wildcard include/config/trim/unused/ksyms.h) \
+    $(wildcard include/config/unused/symbols.h) \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include/asm/linkage.h \
   /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/bitops.h \
   /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include/asm/bitops.h \
   /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/irqflags.h \
@@ -345,6 +340,11 @@ deps_/home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_demo_misc/src/ssd130
     $(wildcard include/config/cpumask/offstack.h) \
     $(wildcard include/config/debug/per/cpu/maps.h) \
   /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/bitmap.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/string.h \
+    $(wildcard include/config/binary/printf.h) \
+    $(wildcard include/config/fortify/source.h) \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/uapi/linux/string.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include/asm/string.h \
   /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/smp_types.h \
   /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/llist.h \
     $(wildcard include/config/arch/have/nmi/safe/cmpxchg.h) \
@@ -685,8 +685,24 @@ deps_/home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_demo_misc/src/ssd130
   /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/rtmutex.h \
     $(wildcard include/config/debug/rt/mutexes.h) \
   /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/uapi/linux/i2c.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/miscdevice.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/uapi/linux/major.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/uaccess.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/fault-inject-usercopy.h \
+    $(wildcard include/config/fault/injection/usercopy.h) \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/instrumented.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include/asm/uaccess.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include/asm/pgtable.h \
+    $(wildcard include/config/va/bits.h) \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/sizes.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include/asm/pgtable-bits.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/asm-generic/pgtable-nopud.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/asm-generic/pgtable-nop4d.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include/asm/tlbflush.h \
+    $(wildcard include/config/no/sfence/vma.h) \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include/asm/smp.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/irqreturn.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include/asm/pgtable-64.h \
+  arch/riscv/include/generated/asm/extable.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/asm-generic/extable.h \
   /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/module.h \
     $(wildcard include/config/modules/tree/lookup.h) \
     $(wildcard include/config/module/sig.h) \
@@ -784,24 +800,6 @@ deps_/home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_demo_misc/src/ssd130
     $(wildcard include/config/have/exit/thread.h) \
     $(wildcard include/config/arch/wants/dynamic/task/struct.h) \
     $(wildcard include/config/have/arch/thread/struct/whitelist.h) \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/uaccess.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/fault-inject-usercopy.h \
-    $(wildcard include/config/fault/injection/usercopy.h) \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/instrumented.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include/asm/uaccess.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include/asm/pgtable.h \
-    $(wildcard include/config/va/bits.h) \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/sizes.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include/asm/pgtable-bits.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/asm-generic/pgtable-nopud.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/asm-generic/pgtable-nop4d.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include/asm/tlbflush.h \
-    $(wildcard include/config/no/sfence/vma.h) \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include/asm/smp.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/irqreturn.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include/asm/pgtable-64.h \
-  arch/riscv/include/generated/asm/extable.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/asm-generic/extable.h \
   /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/cred.h \
     $(wildcard include/config/debug/credentials.h) \
   /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/key.h \
@@ -870,7 +868,11 @@ deps_/home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_demo_misc/src/ssd130
     $(wildcard include/config/have/mod/arch/specific.h) \
     $(wildcard include/config/modules/use/elf/rel.h) \
     $(wildcard include/config/modules/use/elf/rela.h) \
+  /home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_test/include/ssd1306.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/miscdevice.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/uapi/linux/major.h \
+  /home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_test/include/ssd1306_misc.h \
 
-/home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_demo_misc/src/ssd1306.o: $(deps_/home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_demo_misc/src/ssd1306.o)
+/home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_test/src/ssd1306.o: $(deps_/home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_test/src/ssd1306.o)
 
-$(deps_/home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_demo_misc/src/ssd1306.o):
+$(deps_/home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_test/src/ssd1306.o):

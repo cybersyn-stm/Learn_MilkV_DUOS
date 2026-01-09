@@ -1,44 +1,30 @@
-# Makefile
+# Minimal reusable Makefile (cross compile + clangd friendly)
+# Usage:
+#   make
+#   bear -- make
+#   make clean
 
+CC := /home/cybersyn/duo-buildroot-sdk-v2/host-tools/gcc/riscv64-linux-musl-x86_64/bin/riscv64-unknown-linux-musl-gcc
+SYSROOT := /home/cybersyn/duo-buildroot-sdk-v2/host-tools/gcc/riscv64-linux-musl-x86_64/sysroot
 
-RESET :=\033[0m
-BLUE := \033[36m
+APP  ?= led
+SRCS ?= src/led.c
+OBJS := $(SRCS:.c=.o)
 
-SRC_DIR := src
-OBJ_DIR := obj
+# Keep these flags so bear/clangd learns the target + sysroot.
+COMMON := --sysroot=$(SYSROOT)
 
-SRC := $(shell find src -name led.1.c)
-OBJ := $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC))
+CFLAGS  ?= -O2 -Wall $(COMMON)
+LDFLAGS ?= $(COMMON)
+LDLIBS  ?=
 
-TARGET := led
+all: $(APP)
 
-cc=/home/cybersyn/duos/duo-examples/host-tools/gcc/riscv64-linux-musl-x86_64/bin/riscv64-unknown-linux-musl-gcc
-var=led.o
+$(APP): $(OBJS)
+	$(CC) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
+%.o: %.c
+	$(CC) $(CFLAGS) -c -o $@ $<
 
-$(TARGET) : $(OBJ) #目标led执行文件依赖于OBJ的字符串内容 
-	@echo -n "Linking: $(OBJ)\n"
-	@$(cc) $^ -o $@ 
-	@echo -n "Build complete: $(BLUE)$@$(RESET)\n"
-	
-$(OBJ) : $(SRC) #目标文件依赖于源文件
-	@mkdir -p $(dir $@)
-	@$(cc) -c $< -o $@
-
-compile : $(OBJ)
-	@echo -n "Compilation complete: $(TARGET).o$(RESET)\n"
-
-send : $(TARGET)
-	@echo -n "Send to duos\n"
-	scp led root@192.168.42.1:/root/
-
-clean :
-	@echo -n "Cleaning project...\n"
-	@rm -rf $(OBJ_DIR)
-	@rm -f $(TARGET)
-
-debug : 
-	@echo $(OBJ)
-	@echo $(SRC)
-
-.PHONY : debug debug clean compile
+clean:
+	rm -f $(APP) $(OBJS)

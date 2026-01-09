@@ -1,0 +1,1 @@
+cmd_/home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_test/ssd1306.mod := { echo  /home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_test/src/ssd1306.o /home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_test/src/ssd1306_misc.o;  echo; } > /home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_test/ssd1306.mod
