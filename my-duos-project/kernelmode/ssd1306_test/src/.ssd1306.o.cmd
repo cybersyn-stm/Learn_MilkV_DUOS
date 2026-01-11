@@ -685,24 +685,6 @@ deps_/home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_test/src/ssd1306.o :
   /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/rtmutex.h \
     $(wildcard include/config/debug/rt/mutexes.h) \
   /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/uapi/linux/i2c.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/uaccess.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/fault-inject-usercopy.h \
-    $(wildcard include/config/fault/injection/usercopy.h) \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/instrumented.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include/asm/uaccess.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include/asm/pgtable.h \
-    $(wildcard include/config/va/bits.h) \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/sizes.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include/asm/pgtable-bits.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/asm-generic/pgtable-nopud.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/asm-generic/pgtable-nop4d.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include/asm/tlbflush.h \
-    $(wildcard include/config/no/sfence/vma.h) \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include/asm/smp.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/irqreturn.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include/asm/pgtable-64.h \
-  arch/riscv/include/generated/asm/extable.h \
-  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/asm-generic/extable.h \
   /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/module.h \
     $(wildcard include/config/modules/tree/lookup.h) \
     $(wildcard include/config/module/sig.h) \
@@ -800,6 +782,24 @@ deps_/home/cybersyn/duos/my-duos-project/kernelmode/ssd1306_test/src/ssd1306.o :
     $(wildcard include/config/have/exit/thread.h) \
     $(wildcard include/config/arch/wants/dynamic/task/struct.h) \
     $(wildcard include/config/have/arch/thread/struct/whitelist.h) \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/uaccess.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/fault-inject-usercopy.h \
+    $(wildcard include/config/fault/injection/usercopy.h) \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/instrumented.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include/asm/uaccess.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include/asm/pgtable.h \
+    $(wildcard include/config/va/bits.h) \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/sizes.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include/asm/pgtable-bits.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/asm-generic/pgtable-nopud.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/asm-generic/pgtable-nop4d.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include/asm/tlbflush.h \
+    $(wildcard include/config/no/sfence/vma.h) \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include/asm/smp.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/irqreturn.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/arch/riscv/include/asm/pgtable-64.h \
+  arch/riscv/include/generated/asm/extable.h \
+  /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/asm-generic/extable.h \
   /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/cred.h \
     $(wildcard include/config/debug/credentials.h) \
   /home/cybersyn/duos/duo-buildroot-sdk-v2/linux_5.10/include/linux/key.h \

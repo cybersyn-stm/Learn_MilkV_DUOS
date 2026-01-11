@@ -2,16 +2,35 @@
   {
     "arguments": [
       "/home/cybersyn/duo-buildroot-sdk-v2/host-tools/gcc/riscv64-linux-musl-x86_64/bin/riscv64-unknown-linux-musl-gcc",
-      "-c",
+      "-I./include/",
       "-O2",
       "-Wall",
+      "-Wextra",
       "--sysroot=/home/cybersyn/duo-buildroot-sdk-v2/host-tools/gcc/riscv64-linux-musl-x86_64/sysroot",
+      "-c",
       "-o",
-      "ssd1306_misc_user",
-      "ssd1306_misc_user.c"
+      "src/ssd1306_misc_user.o",
+      "src/ssd1306_misc_user.c"
     ],
     "directory": "/home/cybersyn/duos/my-duos-project/usermode/user_ssd1306",
-    "file": "/home/cybersyn/duos/my-duos-project/usermode/user_ssd1306/ssd1306_misc_user.c",
-    "output": "/home/cybersyn/duos/my-duos-project/usermode/user_ssd1306/ssd1306_misc_user"
+    "file": "/home/cybersyn/duos/my-duos-project/usermode/user_ssd1306/src/ssd1306_misc_user.c",
+    "output": "/home/cybersyn/duos/my-duos-project/usermode/user_ssd1306/src/ssd1306_misc_user.o"
+  },
+  {
+    "arguments": [
+      "/home/cybersyn/duo-buildroot-sdk-v2/host-tools/gcc/riscv64-linux-musl-x86_64/bin/riscv64-unknown-linux-musl-gcc",
+      "-I./include/",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "--sysroot=/home/cybersyn/duo-buildroot-sdk-v2/host-tools/gcc/riscv64-linux-musl-x86_64/sysroot",
+      "-c",
+      "-o",
+      "src/ssd1306_8x16.o",
+      "src/ssd1306_8x16.c"
+    ],
+    "directory": "/home/cybersyn/duos/my-duos-project/usermode/user_ssd1306",
+    "file": "/home/cybersyn/duos/my-duos-project/usermode/user_ssd1306/src/ssd1306_8x16.c",
+    "output": "/home/cybersyn/duos/my-duos-project/usermode/user_ssd1306/src/ssd1306_8x16.o"
   }
 ]

@@ -1,18 +1,17 @@
 #include <linux/device.h>
 #include <linux/i2c.h>
-#include <linux/init.h>
 #include <linux/kernel.h>
 #include <linux/mutex.h>
 #include <linux/slab.h>
 #include <linux/string.h>
 #include <linux/sysfs.h>
 #include <linux/types.h>
-#include <linux/uaccess.h>
 
 #include "linux/module.h"
 #include "ssd1306.h"
 #include "ssd1306_misc.h"
 
+/* 发送命令/数据的底层函数：每次发送 (control + data) 两字节 */
 static int ssd1306_write_byte(struct i2c_client *client, u8 control, u8 data) {
     u8 buf[2];
     struct i2c_msg msg;
@@ -34,13 +33,47 @@ static int ssd1306_write_byte(struct i2c_client *client, u8 control, u8 data) {
     return 0;
 }
 
+/* 对外可见：发送 1 字节命令 */
+int ssd1306_write_cmd(struct i2c_client *client, u8 cmd) {
+    return ssd1306_write_byte(client, SSD1306_I2C_CMD, cmd);
+}
+
+/*
+ * 对外可见：设置整屏写入窗口
+ * 0x20 0x00 : Horizontal Addressing Mode
+ * 0x21 0..127 : Column range
+ * 0x22 0..7   : Page range (for 64px height)
+ */
+int ssd1306_set_full_window(struct i2c_client *client) {
+    int ret = 0;
+
+    ret |= ssd1306_write_cmd(client, 0x20);
+    ret |= ssd1306_write_cmd(client, 0x00);
+
+    ret |= ssd1306_write_cmd(client, 0x21);
+    ret |= ssd1306_write_cmd(client, 0x00);
+    ret |= ssd1306_write_cmd(client, 0x7F);
+
+    ret |= ssd1306_write_cmd(client, 0x22);
+    ret |= ssd1306_write_cmd(client, 0x00);
+    ret |= ssd1306_write_cmd(client, 0x07);
+
+    return ret ? -EIO : 0;
+}
+
+/*
+ * 一次性发送 data payload（前面自动加 0x40 控制字节）
+ * 给 misc 层 write() 调用，所以必须是“非 static”
+ */
 int ssd1306_write_data_buf(struct i2c_client *client, const u8 *data,
                            size_t len) {
     struct i2c_msg msg;
     u8 *buf;
     int ret;
 
-    if (!len)
+    if (!client || !data)
+        return -EINVAL;
+    if (len == 0)
         return 0;
 
     buf = kmalloc(len + 1, GFP_KERNEL);
@@ -66,11 +99,7 @@ int ssd1306_write_data_buf(struct i2c_client *client, const u8 *data,
     return 0;
 }
 
-static int ssd1306_write_command(struct i2c_client *client, u8 data) {
-    return ssd1306_write_byte(client, SSD1306_I2C_CMD, data);
-}
-
-static int ssd1306_write_data(struct i2c_client *client, u8 data) {
+static int ssd1306_write_data_byte(struct i2c_client *client, u8 data) {
     return ssd1306_write_byte(client, SSD1306_I2C_DATA, data);
 }
 
@@ -78,34 +107,34 @@ static int ssd1306_write_data(struct i2c_client *client, u8 data) {
 static int ssd1306_init_display(struct i2c_client *client) {
     int ret = 0;
 
-    ret |= ssd1306_write_command(client, 0xAE); /* Display OFF */
-    ret |= ssd1306_write_command(client, 0x20); /* Set Memory Addressing Mode */
-    ret |= ssd1306_write_command(client, 0x00); /* Horizontal Addressing Mode */
-    ret |= ssd1306_write_command(client, 0xB0); /* Set Page Start Address 0 */
-    ret |= ssd1306_write_command(client, 0xC8); /* COM Output Scan Direction */
-    ret |= ssd1306_write_command(client, 0x00); /* Set low column address */
-    ret |= ssd1306_write_command(client, 0x10); /* Set high column address */
-    ret |= ssd1306_write_command(client, 0x40); /* Set start line address */
-    ret |= ssd1306_write_command(client, 0x81); /* Set contrast control */
-    ret |= ssd1306_write_command(client, 0xFF);
-    ret |= ssd1306_write_command(client, 0xA1); /* Set segment re-map 0..127 */
-    ret |= ssd1306_write_command(client, 0xA6); /* Normal display */
-    ret |= ssd1306_write_command(client, 0xA8); /* Set multiplex ratio */
-    ret |= ssd1306_write_command(client, 0x3F);
-    ret |= ssd1306_write_command(client, 0xA4); /* Output RAM to display */
-    ret |= ssd1306_write_command(client, 0xD3); /* Set display offset */
-    ret |= ssd1306_write_command(client, 0x00); /* No offset */
-    ret |= ssd1306_write_command(client, 0xD5); /* Set clock divide ratio */
-    ret |= ssd1306_write_command(client, 0xF0);
-    ret |= ssd1306_write_command(client, 0xD9); /* Set pre-charge period */
-    ret |= ssd1306_write_command(client, 0x22);
-    ret |= ssd1306_write_command(client, 0xDA); /* Set COM pins config */
-    ret |= ssd1306_write_command(client, 0x12);
-    ret |= ssd1306_write_command(client, 0xDB); /* Set vcomh */
-    ret |= ssd1306_write_command(client, 0x20); /* 0.77xVcc */
-    ret |= ssd1306_write_command(client, 0x8D); /* DC-DC enable */
-    ret |= ssd1306_write_command(client, 0x14);
-    ret |= ssd1306_write_command(client, 0xAF); /* Display ON */
+    ret |= ssd1306_write_cmd(client, 0xAE); /* Display OFF */
+    ret |= ssd1306_write_cmd(client, 0x20); /* Set Memory Addressing Mode */
+    ret |= ssd1306_write_cmd(client, 0x00); /* Horizontal Addressing Mode */
+    ret |= ssd1306_write_cmd(client, 0xB0); /* Set Page Start Address 0 */
+    ret |= ssd1306_write_cmd(client, 0xC8); /* COM Output Scan Direction */
+    ret |= ssd1306_write_cmd(client, 0x00); /* Set low column address */
+    ret |= ssd1306_write_cmd(client, 0x10); /* Set high column address */
+    ret |= ssd1306_write_cmd(client, 0x40); /* Set start line address */
+    ret |= ssd1306_write_cmd(client, 0x81); /* Set contrast control */
+    ret |= ssd1306_write_cmd(client, 0xFF);
+    ret |= ssd1306_write_cmd(client, 0xA1); /* Set segment re-map 0..127 */
+    ret |= ssd1306_write_cmd(client, 0xA6); /* Normal display */
+    ret |= ssd1306_write_cmd(client, 0xA8); /* Set multiplex ratio */
+    ret |= ssd1306_write_cmd(client, 0x3F);
+    ret |= ssd1306_write_cmd(client, 0xA4); /* Output RAM to display */
+    ret |= ssd1306_write_cmd(client, 0xD3); /* Set display offset */
+    ret |= ssd1306_write_cmd(client, 0x00); /* No offset */
+    ret |= ssd1306_write_cmd(client, 0xD5); /* Set clock divide ratio */
+    ret |= ssd1306_write_cmd(client, 0xF0);
+    ret |= ssd1306_write_cmd(client, 0xD9); /* Set pre-charge period */
+    ret |= ssd1306_write_cmd(client, 0x22);
+    ret |= ssd1306_write_cmd(client, 0xDA); /* Set COM pins config */
+    ret |= ssd1306_write_cmd(client, 0x12);
+    ret |= ssd1306_write_cmd(client, 0xDB); /* Set vcomh */
+    ret |= ssd1306_write_cmd(client, 0x20); /* 0.77xVcc */
+    ret |= ssd1306_write_cmd(client, 0x8D); /* DC-DC enable */
+    ret |= ssd1306_write_cmd(client, 0x14);
+    ret |= ssd1306_write_cmd(client, 0xAF); /* Display ON */
 
     if (ret != 0) {
         dev_err(&client->dev, "SSD1306 initialization sequence failed\n");
@@ -114,6 +143,7 @@ static int ssd1306_init_display(struct i2c_client *client) {
     return 0;
 }
 
+/* Sysfs */
 static ssize_t ssd1306_command_store(struct device *dev,
                                      struct device_attribute *attr,
                                      const char *buf, size_t count) {
@@ -128,7 +158,7 @@ static ssize_t ssd1306_command_store(struct device *dev,
     }
 
     mutex_lock(&data->lock);
-    ret = ssd1306_write_command(client, command);
+    ret = ssd1306_write_cmd(client, command);
     mutex_unlock(&data->lock);
 
     return ret ? ret : count;
@@ -148,7 +178,7 @@ static ssize_t ssd1306_data_store(struct device *dev,
     }
 
     mutex_lock(&data->lock);
-    ret = ssd1306_write_data(client, v);
+    ret = ssd1306_write_data_byte(client, v);
     mutex_unlock(&data->lock);
 
     return ret ? ret : count;
@@ -185,6 +215,8 @@ static struct attribute_group ssd1306_attr_group = {
     .attrs = ssd1306_attrs,
 };
 
+/* ========== i2c driver ========== */
+
 static int ssd1306_probe(struct i2c_client *client,
                          const struct i2c_device_id *id) {
     struct ssd1306_data *data;
@@ -218,7 +250,6 @@ static int ssd1306_probe(struct i2c_client *client,
         return ret;
     }
 
-    /* NEW: register /dev/ssd1306 */
     ret = ssd1306_misc_register(data);
     if (ret) {
         sysfs_remove_group(&client->dev.kobj, &ssd1306_attr_group);
@@ -228,10 +259,10 @@ static int ssd1306_probe(struct i2c_client *client,
     dev_info(&client->dev, "======Probing SSD1306 SUCCESS======\n");
     return 0;
 }
+
 static int ssd1306_remove(struct i2c_client *client) {
     struct ssd1306_data *data = i2c_get_clientdata(client);
 
-    /* NEW: deregister /dev/ssd1306 */
     if (data)
         ssd1306_misc_deregister(data);
 
@@ -243,7 +274,6 @@ static int ssd1306_remove(struct i2c_client *client) {
 
 static const struct i2c_device_id ssd1306_ids[] = {{SSD1306_NAME, 0}, {}};
 MODULE_DEVICE_TABLE(i2c, ssd1306_ids);
-
 static const struct of_device_id ssd1306_of_match[] = {
     {.compatible = "ssd1306"}, {}};
 MODULE_DEVICE_TABLE(of, ssd1306_of_match);
@@ -262,6 +292,5 @@ static struct i2c_driver ssd1306_driver = {
 module_i2c_driver(ssd1306_driver);
 
 MODULE_AUTHOR("Cybersyn");
-MODULE_DESCRIPTION(
-    "SSD1306 I2C OLED Display Driver (sysfs + misc, standard misc open)");
+MODULE_DESCRIPTION("SSD1306 I2C OLED Display Driver (sysfs + misc)");
 MODULE_LICENSE("GPL");

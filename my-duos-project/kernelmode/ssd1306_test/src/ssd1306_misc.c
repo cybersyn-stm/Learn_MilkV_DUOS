@@ -4,10 +4,10 @@
 #include <linux/mutex.h>
 #include <linux/uaccess.h>
 
-#include "linux/export.h"
-#include "linux/kernel.h"
-#include "linux/slab.h"
-#include "linux/types.h"
+#include <linux/kernel.h>
+#include <linux/slab.h>
+#include <linux/types.h>
+
 #include "ssd1306.h"
 #include "ssd1306_misc.h"
 
@@ -36,12 +36,23 @@ static ssize_t ssd1306_misc_write(struct file *file, const char __user *buf,
     if (count == 0)
         return 0;
 
+    /*
+     * 强烈建议：整屏刷新只接受 1024 字节
+     * （避免你觉得“显示不完整”：写入不足时其余区域仍是旧内容）
+     */
+    if (count != SSD1306_FB_SIZE)
+        return -EINVAL;
+
     kbuf = memdup_user(buf, count);
     if (IS_ERR(kbuf))
         return PTR_ERR(kbuf);
 
     mutex_lock(&data->lock);
-    ret = ssd1306_write_data_buf(data->client, kbuf, count);
+
+    ret = ssd1306_set_full_window(data->client);
+    if (!ret)
+        ret = ssd1306_write_data_buf(data->client, kbuf, count);
+
     mutex_unlock(&data->lock);
 
     kfree(kbuf);
@@ -82,5 +93,6 @@ int ssd1306_misc_register(struct ssd1306_data *data) {
 void ssd1306_misc_deregister(struct ssd1306_data *data) {
     if (!data)
         return;
+
     misc_deregister(&data->miscdev);
 }

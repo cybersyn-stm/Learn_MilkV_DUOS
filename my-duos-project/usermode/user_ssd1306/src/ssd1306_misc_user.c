@@ -1,3 +1,4 @@
+#include "ssd1306_8x16.h"
 #include <errno.h>
 #include <fcntl.h>
 #include <stdint.h>
@@ -8,7 +9,7 @@
 #define DEV_PATH "/dev/ssd1306"
 #define WIDTH 128
 #define HEIGHT 64
-#define FB_SIZE (WIDTH * HEIGHT / 8) /* 1024 */
+#define FB_SIZE (WIDTH * HEIGHT / 8)
 
 static int write_all(int fd, const void *buf, size_t len) {
     const uint8_t *p = (const uint8_t *)buf;
@@ -16,6 +17,7 @@ static int write_all(int fd, const void *buf, size_t len) {
 
     while (left > 0) {
         ssize_t n = write(fd, p, left);
+        printf("write %zu bytes, n=%zd\n", left, n);
         if (n < 0) {
             if (errno == EINTR)
                 continue;
@@ -30,18 +32,14 @@ static int write_all(int fd, const void *buf, size_t len) {
 static void pattern_all(uint8_t *fb, uint8_t v) { memset(fb, v, FB_SIZE); }
 
 static void pattern_checker(uint8_t *fb) {
-    /* 8 pages, each 128 bytes */
     for (int page = 0; page < 8; page++) {
-        for (int x = 0; x < WIDTH; x++) {
-            /* 0xAA / 0x55 形成棋盘格感觉 */
-            fb[page * WIDTH + x] = (x & 1) ? 0xAA : 0x55;
-        }
+        for (int x = 0; x < WIDTH; x++)
+            fb[page * WIDTH + x] = (x & 1) ? 0xCC : 0x00;
     }
 }
 
 static void pattern_bars(uint8_t *fb) {
     memset(fb, 0x00, FB_SIZE);
-    /* 点亮前两页形成两条横带 */
     memset(fb + 0 * WIDTH, 0xFF, WIDTH);
     memset(fb + 1 * WIDTH, 0xFF, WIDTH);
 }
@@ -49,6 +47,7 @@ static void pattern_bars(uint8_t *fb) {
 int main(int argc, char **argv) {
     uint8_t fb[FB_SIZE];
     const char *mode = (argc >= 2) ? argv[1] : "checker";
+    const char *select = (argc >= 3) ? argv[2] : NULL;
 
     if (strcmp(mode, "on") == 0) {
         pattern_all(fb, 0xFF);
@@ -56,12 +55,30 @@ int main(int argc, char **argv) {
         pattern_all(fb, 0x00);
     } else if (strcmp(mode, "bars") == 0) {
         pattern_bars(fb);
+    } else if (strcmp(mode, "user") == 0) {
+        if (!select) {
+            fprintf(stderr, "usage: %s user 1|2\n", argv[0]);
+            return 1;
+        }
+
+        if (strcmp(select, "1") == 0) {
+            printf("user pattern 1 selected\n");
+            ssd1306_buffer_clear(fb);
+            ssd1306_draw_buffer_string8x16(fb, 0, 0, "Hellow, world!");
+            ssd1306_draw_buffer_string8x16(fb, 0, 2, "Form cybersyn.");
+        } else if (strcmp(select, "2") == 0) {
+            printf("user pattern 2 selected\n");
+            pattern_all(fb, 0x0F);
+        } else {
+            fprintf(stderr, "unknown user pattern: %s (use 1 or 2)\n", select);
+            return 1;
+        }
     } else {
-        /* 默认 checker */
         pattern_checker(fb);
     }
 
     int fd = open(DEV_PATH, O_WRONLY);
+    // open返回文件描述符，小于0表示打开失败
     if (fd < 0) {
         fprintf(stderr, "open(%s) failed: %s\n", DEV_PATH, strerror(errno));
         return 1;
@@ -74,8 +91,5 @@ int main(int argc, char **argv) {
     }
 
     close(fd);
-    printf("Wrote %u bytes to %s (pattern=%s)\n", (unsigned)sizeof(fb),
-           DEV_PATH, mode);
-    printf("Try: %s on|off|checker|bars\n", argv[0]);
     return 0;
 }
